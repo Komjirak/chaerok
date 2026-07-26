@@ -18,6 +18,7 @@ export function Header() {
           <Link to="/#features" className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.features')}</Link>
           <Link to="/#ontology" className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.ontology')}</Link>
           <Link to="/#faq" className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.faq')}</Link>
+          <Link to="/notes" className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.notes')}</Link>
         </nav>
         
         <div className="flex items-center gap-4">

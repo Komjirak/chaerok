@@ -13,6 +13,8 @@ import { FAQ } from '@/components/sections/FAQ';
 import { Footer } from '@/components/layout/Footer';
 import { Terms } from '@/pages/Terms';
 import { PrivacyPolicy } from '@/pages/PrivacyPolicy';
+import { Notes } from '@/pages/Notes';
+import { Save } from '@/pages/Save';
 
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -43,18 +45,33 @@ function Home() {
   );
 }
 
+/**
+ * 소개·문서·생각 노트는 공통 껍데기(헤더·푸터)를 쓴다.
+ * /save는 익스텐션이 여는 작은 팝업 창이라 껍데기를 붙이지 않는다 —
+ * 460px 폭에서 헤더와 푸터는 방해만 된다.
+ */
+function Shell() {
+  return (
+    <div className="min-h-screen flex flex-col">
+      <Header />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/privacy" element={<PrivacyPolicy />} />
+        <Route path="/notes" element={<Notes />} />
+      </Routes>
+      <Footer />
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <BrowserRouter>
-      <div className="min-h-screen flex flex-col">
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/terms" element={<Terms />} />
-          <Route path="/privacy" element={<PrivacyPolicy />} />
-        </Routes>
-        <Footer />
-      </div>
+      <Routes>
+        <Route path="/save" element={<Save />} />
+        <Route path="/*" element={<Shell />} />
+      </Routes>
     </BrowserRouter>
   );
 }
