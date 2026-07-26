@@ -1,0 +1,76 @@
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Share2, Globe } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import logoImg from '@/assets/logo.png';
+
+export function Footer() {
+  const { t, i18n } = useTranslation();
+  const [message, setMessage] = useState<string | null>(null);
+
+  const showMessage = (msg: string) => {
+    setMessage(msg);
+    setTimeout(() => setMessage(null), 3000);
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: t('footer.title'),
+          text: t('footer.desc'),
+          url: window.location.origin,
+        });
+      } catch (error) {
+        console.error('Error sharing', error);
+      }
+    } else {
+      navigator.clipboard.writeText(window.location.origin);
+      showMessage(t('footer.msg.copy'));
+    }
+  };
+
+  const handleLanguage = () => {
+    const nextLang = i18n.language === 'ko' ? 'en' : 'ko';
+    i18n.changeLanguage(nextLang);
+    showMessage(nextLang === 'ko' ? '언어가 한국어로 변경되었습니다.' : 'Language changed to English.');
+  };
+
+  return (
+    <footer className="bg-surface-paper pt-20 pb-10 border-t border-surface-amber/30">
+      <div className="max-w-[1200px] mx-auto px-5 lg:px-10">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-10 mb-16">
+          <div className="flex items-center gap-2 text-chaerok-600 mb-4">
+            <img src={logoImg} alt="채록 로고" className="w-10 h-10 object-contain" />
+            <span className="font-serif font-semibold text-2xl tracking-tight">{t('footer.title')}</span>
+          </div>
+          
+          <div className="flex flex-wrap gap-8 text-sm text-ink-muted font-medium">
+            <Link to="/privacy" className="hover:text-ink-dark transition-colors">{t('footer.link.privacy')}</Link>
+            <Link to="/terms" className="hover:text-ink-dark transition-colors">{t('footer.link.terms')}</Link>
+            <a href="https://komjirak.studio" target="_blank" rel="noopener noreferrer" className="hover:text-ink-dark transition-colors">{t('footer.link.contact')}</a>
+          </div>
+          
+          <div className="flex gap-4 relative">
+            <button onClick={handleShare} className="w-10 h-10 rounded-full bg-surface-amber/50 flex items-center justify-center text-ink-dark hover:bg-surface-amber transition-colors" aria-label="Share">
+              <Share2 className="w-5 h-5" strokeWidth={1.5} />
+            </button>
+            <button onClick={handleLanguage} className="w-10 h-10 rounded-full bg-surface-amber/50 flex items-center justify-center text-ink-dark hover:bg-surface-amber transition-colors" aria-label="Website Language">
+              <Globe className="w-5 h-5" strokeWidth={1.5} />
+            </button>
+
+            {message && (
+              <div className="absolute -top-12 right-0 bg-ink-dark text-white text-xs px-3 py-2 rounded-lg whitespace-nowrap shadow-ambient z-10 animate-fade-in">
+                {message}
+              </div>
+            )}
+          </div>
+        </div>
+        
+        <div className="text-center md:text-left text-sm text-ink-muted/70">
+          {t('footer.copy')}
+        </div>
+      </div>
+    </footer>
+  );
+}

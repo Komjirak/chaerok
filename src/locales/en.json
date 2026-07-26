@@ -1,0 +1,101 @@
+{
+  "header": {
+    "title": "Chaerok",
+    "nav": {
+      "features": "Features",
+      "ontology": "Ontology",
+      "faq": "FAQ"
+    },
+    "try": "Start for Free"
+  },
+  "hero": {
+    "badge": "Your Digital Knowledge Garden",
+    "title1": "Connect Thoughts,",
+    "title2": "Weave Wisdom",
+    "desc": "Chaerok is an AI-powered second brain that connects your fragmented notes and scraps into a semantic network.",
+    "btnStart": "Start for Free",
+    "btnHow": "See How It Works",
+    "floatingTitle": "Chaerok Summarized It",
+    "floatingDesc": "Platform: RN(React Native) for iOS / AOS. Review your notes."
+  },
+  "features": {
+    "badge": "Perfect Workflow with AI Assistant",
+    "desc": "Focus on the act of recording itself, while Chaerok's intelligent engine automates the rest.",
+    "f1": {
+      "title": "Rapid Capture",
+      "desc": "Record instantly, anytime. Safely store inspiration in any form—text, images, voice—without missing a beat."
+    },
+    "f2": {
+      "title": "Intelligent Summary",
+      "desc": "Find the core within vast information. The AI agent transforms complex notes into intuitive briefings."
+    },
+    "f3": {
+      "title": "Semantic Connection",
+      "desc": "Different thoughts meet to create new insights. The ontology-based graph UI visualizes the links between your ideas."
+    }
+  },
+  "ontology": {
+    "svg": {
+      "ai": "AI/ML",
+      "cloud": "Cloud",
+      "insight": "Insight",
+      "business": "Business",
+      "idea": "Idea"
+    },
+    "title1": "Mapping Your Knowledge:",
+    "title2": "Semantic Ontology",
+    "desc": "Chaerok manages records not as a linear list, but as an organic web. As your thoughts grow, the knowledge graph becomes denser, suggesting new ideas you hadn't discovered before.",
+    "l1": "Automatic Node Connection Algorithm",
+    "l2": "Context-Based Knowledge Clustering",
+    "l3": "Visualization of Idea Convergence"
+  },
+  "privacy": {
+    "title": "Your Data is Yours",
+    "desc": "Because it holds your most intimate thoughts, we designed it with privacy as our top priority.",
+    "f1": {
+      "title": "On-Device AI",
+      "desc": "Data summarization and analysis are processed safely on your device, not the cloud."
+    },
+    "f2": {
+      "title": "Seamless Sync",
+      "desc": "Synchronized in real-time across mobile, tablet, and desktop for an uninterrupted recording environment."
+    },
+    "f3": {
+      "title": "E2E Encryption",
+      "desc": "All synchronized data is strictly protected with End-to-End Encryption."
+    },
+    "mock": {
+      "title": "Chaerok",
+      "desc": "The second brain that connects your thoughts"
+    }
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "q1": "Can I use it for free?",
+    "a1": "Chaerok provides basic recording and syncing features for free forever. Advanced features like AI briefings and semantic ontology are available through premium plans.",
+    "q2": "Can I backup or export my data?",
+    "a2": "Yes, you can bulk export all your written data in Markdown and CSV formats at any time.",
+    "q3": "Do you support languages other than Korean?",
+    "a3": "Currently, we fully support semantic analysis for Korean and English records, and we plan to gradually expand supported languages.",
+    "cta": {
+      "title": "Today's insights become tomorrow's wisdom.",
+      "desc": "Start Chaerok right now and cultivate your own digital knowledge garden.",
+      "btn1": "Download on the App Store",
+      "btn2": "Get it on Google Play"
+    }
+  },
+  "footer": {
+    "title": "Chaerok",
+    "desc": "The second brain that connects your thoughts",
+    "link": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "contact": "Contact Us"
+    },
+    "copy": "© 2025-2026 Komjirak Studio. All rights reserved.",
+    "msg": {
+      "copy": "Link copied to clipboard.",
+      "lang": "Language changed to English."
+    }
+  }
+}
