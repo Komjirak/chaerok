@@ -1,0 +1,282 @@
+import { type ReactNode, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useSearchParams } from 'react-router-dom';
+import { doc, setDoc } from 'firebase/firestore';
+import { AlertTriangle, Check, Lock, LogIn } from 'lucide-react';
+import { Button } from '@/components/ui/Button';
+import { useChaerokSession } from '@/hooks/useChaerokSession';
+import {
+  auth,
+  cleanUrlForDisplay,
+  db,
+  type NoteTag,
+} from '@/lib/chaerok';
+import logoImg from '@/assets/logo.png';
+
+/**
+ * 웹에서 담기 — 크롬 익스텐션이 여는 창.
+ *
+ * 왜 익스텐션이 직접 저장하지 않는가: MV3 서비스 워커에서는 Firebase 로그인
+ * 팝업을 띄울 수 없고, 대안(chrome.identity)은 확장 ID가 박힌 별도 OAuth
+ * 클라이언트를 미리 만들어야 한다. 이 페이지는 웹 뷰어와 **같은 출처·같은
+ * 세션**을 쓰므로 이미 로그인한 사용자는 아무것도 더 하지 않아도 된다.
+ * 익스텐션은 페이지를 긁어 쿼리로 넘기는 일만 한다.
+ *
+ * 저장 스키마는 앱의 upsertNoteFromRemote가 읽는 모양과 정확히 같아야 한다 —
+ * 어긋나면 폰에서 빈 노트가 된다. 폴더·태그는 id가 아니라 **이름**으로 넘긴다.
+ */
+
+type Step = 'form' | 'busy' | 'done' | 'fail';
+
+interface Analyzed {
+  title: string;
+  summary: string;
+  tags: NoteTag[];
+  folder: string;
+}
+
+export function Save() {
+  const { i18n } = useTranslation();
+  const isEn = i18n.language === 'en';
+  const { user, tier, loading, signIn, error: authError } = useChaerokSession(isEn);
+  const [params] = useSearchParams();
+
+  const page = useMemo(
+    () => ({
+      url: params.get('url') ?? '',
+      title: params.get('title') ?? '',
+      text: params.get('text') ?? '',
+    }),
+    [params],
+  );
+
+  const [memo, setMemo] = useState('');
+  const [step, setStep] = useState<Step>('form');
+  const [result, setResult] = useState<Analyzed | null>(null);
+  const [why, setWhy] = useState('');
+
+  useEffect(() => {
+    document.title = isEn ? 'Save to Chaerok' : '채록에 담기';
+  }, [isEn]);
+
+  const save = async () => {
+    const content = [memo.trim(), page.text, page.title].filter(Boolean).join('\n\n').slice(0, 20_000);
+    if (!content) {
+      setWhy(isEn ? 'Nothing to save from this page.' : '담을 내용을 찾지 못했어요.');
+      return setStep('fail');
+    }
+
+    setStep('busy');
+    try {
+      const token = await auth().currentUser!.getIdToken();
+      // Cloud Function을 직접 부르면 크로스 오리진이라 preflight가 CORS 미설정으로 막힌다.
+      // 같은 오리진의 /api/analyze로 보내고 vercel.json 리라이트가 서버 간에 대신 호출한다.
+      const res = await fetch('/api/analyze', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ content, sourceUrl: page.url || null, languageInstruction: '' }),
+      });
+
+      // 402·403은 서버가 조용히 거절한 것 — 문구만 오고 수치는 오지 않는다
+      if (res.status === 402 || res.status === 403) {
+        const body = (await res.json().catch(() => ({}))) as { userMessage?: string };
+        setWhy(body.userMessage ?? (isEn ? "We can't organize this right now." : '지금은 정리해 드릴 수 없어요.'));
+        return setStep('fail');
+      }
+      if (!res.ok) {
+        setWhy(isEn ? "Chaerok couldn't read the page." : '채록이가 내용을 정리하지 못했어요.');
+        return setStep('fail');
+      }
+
+      const r = (await res.json()) as Partial<Analyzed> & { tags?: NoteTag[] };
+      const now = Date.now();
+      const id = crypto.randomUUID();
+      const analyzed: Analyzed = {
+        title: r.title || page.title || (isEn ? 'Saved from the web' : '웹에서 담은 기록'),
+        summary: r.summary || '',
+        tags: Array.isArray(r.tags)
+          ? r.tags.slice(0, 5).map((t) => ({ name: String(t.name), type: t.type ?? 'keyword' }))
+          : [],
+        folder: r.folder || '미분류',
+      };
+
+      await setDoc(doc(db(), 'notes', user!.uid, 'items', id), {
+        createdAt: now,
+        updatedAt: now,
+        type: page.url ? 'url' : 'text',
+        sourceApp: 'web-extension',
+        rawContent: content,
+        sourceUrl: page.url || null,
+        title: analyzed.title,
+        summary: analyzed.summary,
+        folderName: analyzed.folder,
+        tags: analyzed.tags,
+        processedByLayer: 'L2',
+        processedByModel: 'chaerok-cloud',
+      });
+
+      setResult(analyzed);
+      setStep('done');
+    } catch {
+      setWhy(isEn ? 'Connection dropped. Try again in a moment.' : '연결이 끊겼어요. 잠시 뒤 다시 시도해 주세요.');
+      setStep('fail');
+    }
+  };
+
+  return (
+    <main className="min-h-dvh bg-surface-paper">
+      <div className="max-w-md mx-auto px-6 py-6">
+        <header className="flex items-center gap-2.5 pb-4 mb-5 border-b border-surface-amber/60">
+          <img src={logoImg} alt="" className="w-6 h-6 object-contain" />
+          <span className="font-serif font-semibold text-lg">
+            {isEn ? 'Save to Chaerok' : '채록에 담기'}
+          </span>
+          {step === 'busy' ? <span className="ml-auto text-xs text-ink-muted">2 / 2</span> : null}
+        </header>
+
+        {loading ? null : !user ? (
+          <Msg
+            icon={<LogIn className="w-5 h-5" />}
+            title={isEn ? 'Sign in first' : '로그인이 필요해요'}
+            body={
+              isEn
+                ? 'Use the same account as your mobile device and it lands in the same notes.'
+                : '모바일 채록에서 쓰던 계정으로 로그인하면 같은 생각 노트에 담겨요.'
+            }
+          >
+            <Button className="w-full" onClick={signIn}>
+              {isEn ? 'Sign in with Google' : 'Google로 로그인'}
+            </Button>
+            {authError ? <p className="mt-3 text-sm text-chaerok-800">{authError}</p> : null}
+          </Msg>
+        ) : tier !== 'mind' ? (
+          <Msg
+            icon={<Lock className="w-5 h-5" />}
+            title={isEn ? 'Part of Chaerok Pro' : '채록 Pro에서 쓸 수 있어요'}
+            body={
+              isEn
+                ? 'Saving from the web and picking it up on your mobile device is a Pro feature.'
+                : '웹에서 담은 기록을 계정에 보관하고 모바일에서 이어 보는 건 Pro의 기능이에요.'
+            }
+          >
+            <a href="/#pricing" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="w-full">
+                {isEn ? 'See plans' : '요금제 보기'}
+              </Button>
+            </a>
+          </Msg>
+        ) : step === 'form' ? (
+          <>
+            <div className="bg-surface-amber/30 border border-surface-amber/60 rounded-xl px-4 py-3.5 mb-4">
+              <p className="text-sm font-medium line-clamp-2 mb-1">
+                {page.title || (isEn ? '(untitled)' : '(제목 없음)')}
+              </p>
+              <p className="text-xs text-ink-muted line-clamp-1 break-all">
+                {cleanUrlForDisplay(page.url)}
+              </p>
+            </div>
+
+            <label className="block mb-5">
+              <span className="block text-[11px] font-semibold uppercase tracking-wider text-ink-muted mb-2">
+                {isEn ? 'A note to go with it (optional)' : '함께 담을 메모 (선택)'}
+              </span>
+              <textarea
+                value={memo}
+                onChange={(e) => setMemo(e.target.value)}
+                rows={4}
+                placeholder={
+                  isEn
+                    ? 'One line on why you are keeping this makes it far easier to find later'
+                    : '이 페이지를 왜 담아두는지 한 줄 적어두면 나중에 훨씬 잘 찾아져요'
+                }
+                className="w-full bg-surface-white border border-surface-amber rounded-xl px-3.5 py-3 text-sm leading-relaxed outline-none focus:ring-2 focus:ring-chaerok-600/40 resize-y"
+              />
+            </label>
+
+            <Button className="w-full" onClick={save}>
+              {isEn ? 'Let Chaerok organize it' : '채록이에게 정리 맡기기'}
+            </Button>
+          </>
+        ) : step === 'busy' ? (
+          <div className="text-center py-10">
+            <div className="w-6 h-6 mx-auto mb-4 rounded-full border-2 border-surface-amber border-t-chaerok-600 animate-spin" />
+            <h2 className="text-lg font-serif mb-1.5">
+              {isEn ? 'Chaerok is reading' : '채록이가 읽고 있어요'}
+            </h2>
+            <p className="text-sm text-ink-muted">
+              {isEn ? 'Summarizing and adding tags.' : '내용을 정리해 제목과 태그를 붙이는 중이에요.'}
+            </p>
+          </div>
+        ) : step === 'done' && result ? (
+          <>
+            <div className="text-center py-5 mb-4">
+              <div className="w-11 h-11 mx-auto mb-3 rounded-xl bg-surface-amber grid place-items-center text-chaerok-600">
+                <Check className="w-5 h-5" />
+              </div>
+              <h2 className="text-lg font-serif">
+                {isEn ? 'Saved to your notes' : '생각 노트에 담았어요'}
+              </h2>
+            </div>
+            <h3 className="font-serif text-xl leading-snug mb-2">{result.title}</h3>
+            {result.summary ? (
+              <p className="text-sm text-ink-muted whitespace-pre-wrap leading-relaxed mb-3.5">
+                {result.summary}
+              </p>
+            ) : null}
+            <div className="flex flex-wrap gap-1.5 mb-2">
+              {result.tags.map((t) => (
+                <span
+                  key={t.name}
+                  className="text-xs px-2 py-0.5 rounded-full bg-surface-amber/70 text-chaerok-800 border border-surface-amber"
+                >
+                  {t.name}
+                </span>
+              ))}
+            </div>
+            <p className="text-xs text-ink-muted mb-5">
+              {isEn ? `Filed under ${result.folder}` : `${result.folder} 폴더에 담겼어요`}
+            </p>
+            <a href="/notes" target="_blank" rel="noopener noreferrer">
+              <Button variant="outline" className="w-full">
+                {isEn ? 'Open your notes' : '생각 노트에서 보기'}
+              </Button>
+            </a>
+          </>
+        ) : (
+          <Msg
+            icon={<AlertTriangle className="w-5 h-5" />}
+            title={isEn ? "Couldn't save it" : '담지 못했어요'}
+            body={why}
+          >
+            <Button variant="outline" className="w-full" onClick={() => setStep('form')}>
+              {isEn ? 'Try again' : '다시 시도'}
+            </Button>
+          </Msg>
+        )}
+      </div>
+    </main>
+  );
+}
+
+function Msg({
+  icon,
+  title,
+  body,
+  children,
+}: {
+  icon: ReactNode;
+  title: string;
+  body: string;
+  children?: ReactNode;
+}) {
+  return (
+    <div className="text-center py-8">
+      <div className="w-11 h-11 mx-auto mb-3.5 rounded-xl bg-surface-amber/60 grid place-items-center text-ink-muted">
+        {icon}
+      </div>
+      <h2 className="text-lg font-serif mb-2">{title}</h2>
+      <p className="text-sm text-ink-muted max-w-xs mx-auto leading-relaxed mb-6">{body}</p>
+      {children}
+    </div>
+  );
+}

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://chaerok.komjirak.studio/sitemap.xml
+Host: https://chaerok.komjirak.studio

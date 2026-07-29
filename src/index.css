@@ -1,0 +1,39 @@
+@import "tailwindcss";
+
+@theme {
+  --color-chaerok-50: #FBEFE6;
+  --color-chaerok-100: #F2D9C9;
+  --color-chaerok-400: #D07C4E;
+  --color-chaerok-600: #C9603A;
+  --color-chaerok-800: #8C3A1E;
+  --color-chaerok-900: #5C2612;
+
+  --color-surface-paper: #FBEFE6;
+  --color-surface-amber: #F2D9C9;
+  --color-surface-white: #FFFFFF;
+  --color-surface-dark: #362f29;
+  
+  --color-ink-dark: #2D2420;
+  --color-ink-muted: #6d5b4e;
+  
+  --color-node-blue: #7DA7D9;
+
+  --font-serif: "Plus Jakarta Sans", "Noto Sans KR", sans-serif;
+  --font-sans: "Plus Jakarta Sans", "Noto Sans KR", sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-surface-paper text-ink-dark font-sans antialiased;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-serif tracking-tight;
+  }
+}
+
+@layer utilities {
+  .shadow-ambient {
+    box-shadow: 0 12px 40px rgba(201, 96, 58, 0.08);
+  }
+}

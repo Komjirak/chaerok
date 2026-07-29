@@ -1,0 +1,179 @@
+{
+  "header": {
+    "title": "Chaerok",
+    "nav": {
+      "features": "Features",
+      "ontology": "Ontology",
+      "extension": "Chrome extension",
+      "pricing": "Pricing",
+      "faq": "FAQ",
+      "notes": "Notes"
+    },
+    "try": "Start for Free"
+  },
+  "hero": {
+    "badge": "Your Digital Knowledge Garden",
+    "title1": "Connect Thoughts,",
+    "title2": "Weave Wisdom",
+    "desc": "Chaerok is an AI-powered second brain that connects your fragmented notes and scraps into a semantic network.",
+    "btnStart": "Start for Free",
+    "btnHow": "See How It Works",
+    "platformLabel": "Available Platforms",
+    "floatingTitle": "Chaerok Summarized It",
+    "floatingDesc": "Chaerok (採錄): To search for and gather necessary words or writings. Turn your scattered thoughts into wisdom."
+  },
+  "features": {
+    "desc": "Focus on the act of recording itself, while Chaerok's intelligent engine automates the rest.",
+    "f1": {
+      "title": "Rapid Capture",
+      "desc": "Record instantly, anytime. Safely store inspiration in any form—text, images, voice—without missing a beat."
+    },
+    "f2": {
+      "title": "Intelligent Summary",
+      "desc": "Find the core within vast information. The AI agent transforms complex notes into intuitive briefings."
+    },
+    "f3": {
+      "title": "Semantic Connection",
+      "desc": "Different thoughts meet to create new insights. The ontology-based graph UI visualizes the links between your ideas."
+    },
+    "title1": "Intelligent workflows",
+    "title2": "powered by AI"
+  },
+  "ontology": {
+    "svg": {
+      "ai": "AI/ML",
+      "cloud": "Cloud",
+      "insight": "Insight",
+      "business": "Business",
+      "idea": "Idea"
+    },
+    "title1": "Mapping Your Knowledge:",
+    "title2": "Semantic Ontology",
+    "desc": "Chaerok manages records not as a linear list, but as an organic web. As your thoughts grow, the knowledge graph becomes denser, suggesting new ideas you hadn't discovered before.",
+    "l1": "Automatic Node Connection Algorithm",
+    "l2": "Context-Based Knowledge Clustering",
+    "l3": "Visualization of Idea Convergence"
+  },
+  "extension": {
+    "badge": "Chrome extension",
+    "desc": "When you come across something worth keeping, save it without copying links around. Chaerok summarizes it and files it with tags.",
+    "btnDownload": "Add to Chrome",
+    "btnStore": "Add to Chrome",
+    "howTo": "How to install",
+    "installed": "Installed in this browser",
+    "openNotes": "Open Thought Notes",
+    "step1": "Unzip the file you downloaded.",
+    "step2": "Open chrome://extensions and turn on \"Developer mode\" in the top right.",
+    "step3": "Click \"Load unpacked\" and pick the unzipped folder.",
+    "f1": {
+      "title": "One click to save",
+      "desc": "Toolbar icon, right-click menu, or the Alt+Shift+C shortcut — whichever you reach for."
+    },
+    "f2": {
+      "title": "Save just the part you picked",
+      "desc": "Select a passage first and only that gets saved. Select nothing and it finds the article body."
+    },
+    "f3": {
+      "title": "Lands with everything else",
+      "desc": "Pages saved here stack up alongside what you save on your phone. With Chaerok Pro they open on any device."
+    },
+    "title1": "Capture any page",
+    "title2": "right where you are"
+  },
+  "pricing": {
+    "badge": "Pricing",
+    "title": "Only pay for what you need",
+    "desc": "Recording, organizing, and searching all run on your device for free, no account required. Turn on Pro only when you need deeper understanding.",
+    "free": {
+      "name": "Chaerok",
+      "desc": "Every core feature, running on your device",
+      "price": "$0",
+      "period": "free forever",
+      "features": [
+        "Unlimited text, URL, and image capture",
+        "Automatic tagging and folder sorting",
+        "On-device summaries",
+        "Rule-based briefings",
+        "Local semantic search"
+      ],
+      "cta": "Start for Free"
+    },
+    "pro": {
+      "name": "Chaerok Pro",
+      "badge": "Pro",
+      "desc": "Understand long articles in full, and pick up on any device",
+      "price": "₩4,900",
+      "period": "/ month",
+      "features": [
+        "Everything in the Free plan",
+        "Long-context understanding for full articles",
+        "Understanding of content inside images",
+        "AI memory linking — surfaces related notes automatically",
+        "Cloud sync and backup",
+        "Continue on any device",
+        "Web App & Chrome Extension support"
+      ],
+      "cta": "Start with Pro",
+      "support": "✓ Web App & Chrome Extension support"
+    },
+    "footnote": "* Prices shown may vary by store and are subject to change."
+  },
+  "privacy": {
+    "desc": "Because it holds your most intimate thoughts, we designed it with privacy as our top priority.",
+    "f1": {
+      "title": "On-Device AI",
+      "desc": "Data summarization and analysis are processed safely on your device, not the cloud."
+    },
+    "f2": {
+      "title": "Seamless Sync",
+      "desc": "Synchronized in real-time across mobile, tablet, and desktop for an uninterrupted recording environment."
+    },
+    "f3": {
+      "title": "E2E Encryption",
+      "desc": "All synchronized data is strictly protected with End-to-End Encryption."
+    },
+    "mock": {
+      "title": "Chaerok",
+      "desc": "The second brain that connects your thoughts"
+    },
+    "title1": "Today's insights become",
+    "title2": "tomorrow's wisdom."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "q1": "Can I use it for free?",
+    "a1": "Chaerok provides basic recording and syncing features for free forever. Advanced features like AI briefings and semantic ontology are available through premium plans.",
+    "q2": "Is my data kept safe?",
+    "a2": "Your notes are stored on your device first. Sign in and turn on Chaerok Pro's cloud sync to back them up automatically and continue on other devices. However, bulk export features like Markdown or CSV formats are planned to be supported gradually.",
+    "q3": "Do you support languages other than Korean?",
+    "a3": "Currently, we fully support semantic analysis for Korean and English records, and we plan to gradually expand supported languages.",
+    "cta": {
+      "title": "Today's insights become tomorrow's wisdom.",
+      "desc": "Start Chaerok right now and cultivate your own digital knowledge garden.",
+      "btn1": "Download on the App Store",
+      "btn2": "Get it on Google Play",
+      "btn3": "Start on Web",
+      "btnAppStorePrefix": "Download on the",
+      "btnGooglePlayPrefix": "GET IT ON",
+      "btnDownloadAction": "App Store",
+      "btnAppStoreAction": "App Store",
+      "btnGooglePlayAction": "Google Play",
+      "btnWebPrefix": "Start on",
+      "btnWebAction": "Web"
+    }
+  },
+  "footer": {
+    "title": "Chaerok",
+    "desc": "The second brain that connects your thoughts",
+    "link": {
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "contact": "Contact Us"
+    },
+    "copy": "© 2025-2026 Komjirak Studio. All rights reserved.",
+    "msg": {
+      "copy": "Link copied to clipboard.",
+      "lang": "Language changed to English."
+    }
+  }
+}
