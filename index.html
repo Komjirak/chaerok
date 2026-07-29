@@ -24,9 +24,19 @@
   </head>
   <body>
     <div id="root">
-      <h1>채록(chaerok)</h1>
-      <p>채록(chaerok)은 파편화된 메모와 스크랩을 의미망으로 연결해주는 인공지능 기반의 세컨드 브레인 개인 지식 관리 웹 애플리케이션입니다.</p>
+      <div id="app-loading" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#fffdf8;color:#2d2417;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
+        <div style="text-align:center;padding:24px;">
+          <div style="width:48px;height:48px;border-radius:999px;border:3px solid #f6e4b6;border-top-color:#b06f00;margin:0 auto 16px;animation:spin 0.8s linear infinite;"></div>
+          <div style="font-size:16px;font-weight:600;">채록(chaerok)</div>
+          <div style="font-size:14px;color:#6f6255;margin-top:8px;">잠시만 기다려 주세요.</div>
+        </div>
+      </div>
     </div>
+    <style>
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
