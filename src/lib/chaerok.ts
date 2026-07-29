@@ -2,6 +2,15 @@ import { initializeApp, type FirebaseApp } from 'firebase/app';
 import { getAuth, type Auth } from 'firebase/auth';
 import { getFirestore, type Firestore } from 'firebase/firestore';
 
+const DEFAULT_FIREBASE_CONFIG = {
+  apiKey: '',
+  authDomain: 'chaerok-c0830.firebaseapp.com',
+  projectId: 'chaerok-c0830',
+  appId: '1:409220964793:web:2f29fd3b9c8c8aa6915668',
+  storageBucket: 'chaerok-c0830.firebasestorage.app',
+  messagingSenderId: '409220964793',
+};
+
 /**
  * 채록 백엔드 연결.
  *
@@ -13,18 +22,50 @@ import { getFirestore, type Firestore } from 'firebase/firestore';
  * 한쪽만 고치면 앱과 웹이 서로 다른 프로젝트를 보게 된다.
  */
 const firebaseConfig = {
-  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-  authDomain: 'chaerok-c0830.firebaseapp.com',
-  projectId: 'chaerok-c0830',
-  appId: '1:409220964793:web:2f29fd3b9c8c8aa6915668',
-  storageBucket: 'chaerok-c0830.firebasestorage.app',
-  messagingSenderId: '409220964793',
+  ...DEFAULT_FIREBASE_CONFIG,
+  apiKey:
+    typeof import.meta.env.VITE_FIREBASE_API_KEY === 'string' &&
+    import.meta.env.VITE_FIREBASE_API_KEY.trim().length > 0
+      ? import.meta.env.VITE_FIREBASE_API_KEY.trim()
+      : DEFAULT_FIREBASE_CONFIG.apiKey,
+  authDomain:
+    typeof import.meta.env.VITE_FIREBASE_AUTH_DOMAIN === 'string' &&
+    import.meta.env.VITE_FIREBASE_AUTH_DOMAIN.trim().length > 0
+      ? import.meta.env.VITE_FIREBASE_AUTH_DOMAIN.trim()
+      : DEFAULT_FIREBASE_CONFIG.authDomain,
+  projectId:
+    typeof import.meta.env.VITE_FIREBASE_PROJECT_ID === 'string' &&
+    import.meta.env.VITE_FIREBASE_PROJECT_ID.trim().length > 0
+      ? import.meta.env.VITE_FIREBASE_PROJECT_ID.trim()
+      : DEFAULT_FIREBASE_CONFIG.projectId,
+  appId:
+    typeof import.meta.env.VITE_FIREBASE_APP_ID === 'string' &&
+    import.meta.env.VITE_FIREBASE_APP_ID.trim().length > 0
+      ? import.meta.env.VITE_FIREBASE_APP_ID.trim()
+      : DEFAULT_FIREBASE_CONFIG.appId,
+  storageBucket:
+    typeof import.meta.env.VITE_FIREBASE_STORAGE_BUCKET === 'string' &&
+    import.meta.env.VITE_FIREBASE_STORAGE_BUCKET.trim().length > 0
+      ? import.meta.env.VITE_FIREBASE_STORAGE_BUCKET.trim()
+      : DEFAULT_FIREBASE_CONFIG.storageBucket,
+  messagingSenderId:
+    typeof import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID === 'string' &&
+    import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID.trim().length > 0
+      ? import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID.trim()
+      : DEFAULT_FIREBASE_CONFIG.messagingSenderId,
 };
 
 let app: FirebaseApp | null = null;
 
 function ensureApp(): FirebaseApp {
-  if (!app) app = initializeApp(firebaseConfig);
+  if (!app) {
+    try {
+      app = initializeApp(firebaseConfig);
+    } catch (error) {
+      console.error('Firebase initialization failed', error);
+      app = initializeApp(DEFAULT_FIREBASE_CONFIG);
+    }
+  }
   return app;
 }
 

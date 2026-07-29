@@ -93,7 +93,15 @@ export function Notes() {
 
   // ── 로그인 전 ──
   if (loading) {
-    return <main className="flex-1 bg-surface-paper" />;
+    return (
+      <main className="flex-1 bg-surface-paper grid place-items-center px-5 py-24">
+        <div className="w-full max-w-sm text-center">
+          <div className="mx-auto mb-6 h-14 w-14 rounded-2xl bg-surface-amber/60 animate-pulse" />
+          <div className="mx-auto mb-3 h-8 w-40 rounded-full bg-surface-amber/40 animate-pulse" />
+          <div className="mx-auto h-4 w-56 rounded-full bg-surface-amber/20 animate-pulse" />
+        </div>
+      </main>
+    );
   }
 
   if (!user) {

@@ -83,8 +83,15 @@ npm install
 프로젝트 루트에 `.env.local` 파일을 만들고 다음 값을 설정하세요.
 
 ```env
-VITE_FIREBASE_API_KEY=your_firebase_api_key
+VITE_FIREBASE_API_KEY=your_firebase_web_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your-project-id
+VITE_FIREBASE_APP_ID=your_firebase_app_id
+VITE_FIREBASE_STORAGE_BUCKET=your-project.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
 ```
+
+배포 서버(예: Vercel, Netlify, Cloudflare Pages, 서버리스 호스트)에도 동일한 환경 변수를 등록해야 합니다.
 
 ### 실행
 

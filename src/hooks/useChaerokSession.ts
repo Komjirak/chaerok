@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import {
+  getRedirectResult,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   type User,
 } from 'firebase/auth';
@@ -34,9 +36,14 @@ export function useChaerokSession(isEn: boolean): ChaerokSession {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    return onAuthStateChanged(auth(), async (u) => {
+    let settled = false;
+
+    const unsubscribe = onAuthStateChanged(auth(), async (u) => {
       setUser(u);
-      setLoading(false);
+      if (!settled) {
+        settled = true;
+        setLoading(false);
+      }
       if (!u) {
         setTier('free');
         return;
@@ -48,30 +55,65 @@ export function useChaerokSession(isEn: boolean): ChaerokSession {
         setTier('free');
       }
     });
+
+    const resolveRedirect = async () => {
+      try {
+        await getRedirectResult(auth());
+      } catch {
+        // ignore redirect errors and let auth state settle naturally
+      } finally {
+        if (!settled) {
+          settled = true;
+          setLoading(false);
+        }
+      }
+    };
+
+    void resolveRedirect();
+
+    return unsubscribe;
   }, []);
 
   const signIn = async () => {
     setError(null);
+    const provider = new GoogleAuthProvider();
+    const useRedirect =
+      typeof window !== 'undefined' &&
+      (/Android|iPhone|iPad|iPod|Mobile|Tablet/i.test(window.navigator.userAgent) ||
+        window.innerWidth < 768);
+
     try {
-      await signInWithPopup(auth(), new GoogleAuthProvider());
+      if (useRedirect) {
+        await signInWithRedirect(auth(), provider);
+        return;
+      }
+      await signInWithPopup(auth(), provider);
     } catch (e) {
       const code = (e as { code?: string })?.code;
-      // 사용자가 창을 닫은 건 실패가 아니다 — 아무 말도 하지 않는다
       if (code === 'auth/popup-closed-by-user' || code === 'auth/cancelled-popup-request') return;
       if (code === 'auth/unauthorized-domain') {
         setError(
           isEn
             ? 'This domain is not authorized for Google Sign-In. Please add it to Firebase Console.'
-            : '이 도메인이 Firebase 승인된 도메인 목록에 없습니다. Firebase Console에서 도메인을 추가해 주세요.'
+            : '이 도메인이 Firebase 승인된 도메인 목록에 없습니다. Firebase Console에서 도메인을 추가해 주세요.',
         );
         return;
       }
-      
+
+      if (code === 'auth/popup-blocked') {
+        try {
+          await signInWithRedirect(auth(), provider);
+          return;
+        } catch {
+          // redirect flow also failed, so show a friendly message below
+        }
+      }
+
       setError(
         code === 'auth/popup-blocked'
           ? isEn
-            ? 'Your browser blocked the popup. Allow popups and try again.'
-            : '브라우저가 팝업을 막았어요. 팝업을 허용한 뒤 다시 눌러 주세요.'
+            ? 'Your browser blocked the popup. Please try again or continue in the same tab.'
+            : '브라우저가 팝업을 막았어요. 같은 탭에서 다시 시도해 주세요.'
           : isEn
             ? "Couldn't sign in. Please try again in a moment."
             : '로그인하지 못했어요. 잠시 뒤 다시 시도해 주세요.',

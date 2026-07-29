@@ -69,7 +69,7 @@ export function Extension() {
                 <Button
                   variant="secondary"
                   size="lg"
-                  onClick={() => window.open('/notes', '_self')}
+                  onClick={() => window.location.assign('/notes')}
                 >
                   {t('extension.openNotes')}
                 </Button>
