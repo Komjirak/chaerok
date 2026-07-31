@@ -48,6 +48,7 @@ export function Footer() {
           <div className="flex flex-wrap gap-8 text-sm text-ink-muted font-medium">
             <Link to="/privacy" className="hover:text-ink-dark transition-colors">{t('footer.link.privacy')}</Link>
             <Link to="/terms" className="hover:text-ink-dark transition-colors">{t('footer.link.terms')}</Link>
+            <Link to="/delete-account" className="hover:text-ink-dark transition-colors">{t('footer.link.deleteAccount')}</Link>
             <a href="https://komjirak.studio" target="_blank" rel="noopener noreferrer" className="hover:text-ink-dark transition-colors">{t('footer.link.contact')}</a>
           </div>
           

@@ -168,7 +168,8 @@
     "link": {
       "privacy": "Privacy Policy",
       "terms": "Terms of Service",
-      "contact": "Contact Us"
+      "contact": "Contact Us",
+      "deleteAccount": "Delete account"
     },
     "copy": "© 2025-2026 Komjirak Studio. All rights reserved.",
     "msg": {

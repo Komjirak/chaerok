@@ -15,6 +15,7 @@ import { FAQ } from '@/components/sections/FAQ';
 import { Footer } from '@/components/layout/Footer';
 import { Terms } from '@/pages/Terms';
 import { PrivacyPolicy } from '@/pages/PrivacyPolicy';
+import { DeleteAccount } from '@/pages/DeleteAccount';
 import { Notes } from '@/pages/Notes';
 import { Save } from '@/pages/Save';
 
@@ -63,6 +64,8 @@ function Shell() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/notes" element={<Notes />} />
+        {/* Play·App Store가 요구하는 계정 삭제 안내 — 주소를 바꾸면 스토어 설정도 함께 고쳐야 한다 */}
+        <Route path="/delete-account" element={<DeleteAccount />} />
       </Routes>
       <Footer />
     </div>

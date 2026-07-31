@@ -143,8 +143,8 @@ export function PrivacyPolicy() {
             <h2 className="text-2xl font-serif mb-4 text-ink-dark">{isEn ? '7. Retention and Deletion' : '7. 보관 및 삭제'}</h2>
             <p className="text-ink-muted leading-relaxed">
               {isEn
-                ? 'Records are kept until the user deletes the app or manually deletes them from the thought note. If you delete from the thought note, it is also deleted from other synchronized devices and databases. If you only delete the app, the records on the device disappear, but the synchronized copy remains. You can request the complete deletion of synchronized copies, login accounts, and usage aggregations through the inquiry channel below.'
-                : '기록은 이용자가 앱을 삭제하거나 생각 노트에서 직접 삭제할 때까지 보관됩니다. 생각 노트에서 삭제하시면 동기화된 다른 기기와 데이터베이스에서도 함께 삭제됩니다. 앱만 삭제하신 경우 기기의 기록은 사라지지만 동기화본은 남습니다. 동기화본·로그인 계정·사용량 집계의 완전 삭제는 아래 문의 채널로 요청하실 수 있습니다.'
+                ? 'Records are kept until the user deletes the app or manually deletes them from the thought note. If you delete from the thought note, it is also deleted from other synchronized devices and databases. If you only delete the app, the records on the device disappear, but the synchronized copy remains. You can delete synchronized copies, your login account, and usage aggregations yourself with "Delete account" at the bottom of Settings, or request it through the account deletion page if you no longer have the app.'
+                : '기록은 이용자가 앱을 삭제하거나 생각 노트에서 직접 삭제할 때까지 보관됩니다. 생각 노트에서 삭제하시면 동기화된 다른 기기와 데이터베이스에서도 함께 삭제됩니다. 앱만 삭제하신 경우 기기의 기록은 사라지지만 동기화본은 남습니다. 동기화본·로그인 계정·사용량 집계는 앱의 설정 맨 아래 "계정 삭제"에서 직접 지우실 수 있고, 앱이 없으시면 계정 삭제 안내 페이지로 요청하실 수 있습니다.'
               }
             </p>
           </article>
@@ -205,18 +205,20 @@ export function PrivacyPolicy() {
                     <li>Delete record - Delete the item directly from the thought note</li>
                     <li>Stop cloud transmission - Settings → Processing method → Select "Process on Device"</li>
                     <li>Disconnect account - Settings → Account → Logout</li>
+                    <li>Delete account - "Delete account" at the bottom of Settings</li>
                   </>
                 : <>
                     <li>기록 삭제 — 생각 노트에서 항목을 직접 삭제</li>
                     <li>클라우드 전송 중단 — 설정 → 처리 방식 → "기기에서 처리" 선택</li>
                     <li>계정 연결 해제 — 설정 → 계정 → 로그아웃</li>
+                    <li>계정 삭제 — 설정 맨 아래 "계정 삭제"</li>
                   </>
               }
             </ul>
             <p className="text-ink-muted leading-relaxed">
               {isEn
-                ? "Complete deletion of account and server-stored data can be requested through the inquiry channel below, and we will process it without delay."
-                : "계정과 서버 보관 데이터의 완전 삭제는 아래 문의 채널로 요청해 주시면 지체 없이 처리합니다."
+                ? <>Deleting your account erases the notes kept in the cloud, your subscription tier record, and usage records together, and it takes effect immediately. If you no longer have the app installed, you can request deletion through the <a href="/delete-account" className="text-chaerok-600 hover:underline">account deletion page</a> or the inquiry channel below, and we will process it without delay.</>
+                : <>계정을 삭제하시면 클라우드에 보관된 기록·구독 등급 기록·사용량 기록이 함께 지워지며, 즉시 처리됩니다. 앱을 이미 삭제하신 경우에는 <a href="/delete-account" className="text-chaerok-600 hover:underline">계정 삭제 안내 페이지</a> 또는 아래 문의 채널로 요청해 주시면 지체 없이 처리합니다.</>
               }
             </p>
           </article>

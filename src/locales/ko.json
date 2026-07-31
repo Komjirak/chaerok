@@ -169,7 +169,8 @@
     "link": {
       "privacy": "개인정보처리방침",
       "terms": "이용약관",
-      "contact": "연락하기"
+      "contact": "연락하기",
+      "deleteAccount": "계정 삭제"
     },
     "copy": "© 2025-2026 Komjirak Studio. All rights reserved.",
     "msg": {
