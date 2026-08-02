@@ -149,12 +149,12 @@ export function Notes() {
 
           <span
             className={
-              tier === 'mind'
+              tier === 'pro'
                 ? 'ml-auto text-xs font-medium px-2.5 py-1 rounded-full bg-surface-amber text-chaerok-800'
                 : 'ml-auto text-xs font-medium px-2.5 py-1 rounded-full bg-surface-white border border-surface-amber text-ink-muted'
             }
           >
-            {tier === 'mind' ? 'Pro 요금제 사용중' : isEn ? 'Free' : '무료'}
+            {tier === 'pro' ? 'Pro 요금제 사용중' : isEn ? 'Free' : '무료'}
           </span>
 
           <button
@@ -249,7 +249,7 @@ export function Notes() {
               title={isEn ? 'Nothing matched' : '찾는 기록이 없어요'}
               body={isEn ? 'Try another word, or browse by folder.' : '다른 낱말로 찾아보시거나, 폴더에서 훑어보세요.'}
             />
-          ) : tier === 'mind' ? (
+          ) : tier === 'pro' ? (
             <Empty
               icon={<CloudOff className="w-5 h-5" />}
               title={isEn ? 'Nothing here yet' : '아직 올라온 기록이 없어요'}
@@ -355,12 +355,25 @@ function NoteCard({
       onClick={onOpen}
       className="w-full text-left bg-surface-white border border-surface-amber/70 rounded-xl px-4 py-4 hover:border-chaerok-400 transition-colors"
     >
-      <h3 className="font-serif text-lg leading-snug mb-1">
-        {note.title || (isEn ? 'Untitled' : '제목 없음')}
-      </h3>
-      {note.summary ? (
-        <p className="text-sm text-ink-muted line-clamp-2 leading-relaxed">{note.summary}</p>
-      ) : null}
+      <div className="flex items-start gap-3.5">
+        <div className="flex-1 min-w-0">
+          <h3 className="font-serif text-lg leading-snug mb-1">
+            {note.title || (isEn ? 'Untitled' : '제목 없음')}
+          </h3>
+          {note.summary ? (
+            <p className="text-sm text-ink-muted line-clamp-2 leading-relaxed">{note.summary}</p>
+          ) : null}
+        </div>
+        {/* Pro 이미지 동기화 — 폰에서 올린 최적화본 썸네일 */}
+        {note.imageUrl ? (
+          <img
+            src={note.imageUrl}
+            alt=""
+            loading="lazy"
+            className="w-16 h-16 shrink-0 rounded-lg object-cover border border-surface-amber/70"
+          />
+        ) : null}
+      </div>
       <div className="flex flex-wrap items-center gap-1.5 mt-2.5 text-xs text-ink-muted">
         <span>{relativeDate(note.updatedAt, isEn)}</span>
         {note.folderName ? (
@@ -428,6 +441,20 @@ function Detail({
                 ? 'Organized in the cloud'
                 : '클라우드에서 정리함'}
           </p>
+
+          {note.imageUrl ? (
+            <Block label={isEn ? 'Image' : '이미지'}>
+              {/* 새 탭 = 크게 보기 (웹 뷰어는 읽기 전용이라 확대 UI를 따로 만들지 않는다) */}
+              <a href={note.imageUrl} target="_blank" rel="noopener noreferrer">
+                <img
+                  src={note.imageUrl}
+                  alt={note.title || ''}
+                  loading="lazy"
+                  className="w-full max-h-96 object-contain rounded-xl border border-surface-amber/70 bg-surface-amber/20"
+                />
+              </a>
+            </Block>
+          ) : null}
 
           {note.summary ? (
             <Block label={isEn ? 'Summary' : 'AI 요약'}>

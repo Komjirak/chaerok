@@ -149,7 +149,7 @@ export function Save() {
             </Button>
             {authError ? <p className="mt-3 text-sm text-chaerok-800">{authError}</p> : null}
           </Msg>
-        ) : tier !== 'mind' ? (
+        ) : tier !== 'pro' ? (
           <Msg
             icon={<Lock className="w-5 h-5" />}
             title={isEn ? 'Part of Chaerok Pro' : '채록 Pro에서 쓸 수 있어요'}

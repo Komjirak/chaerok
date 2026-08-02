@@ -50,7 +50,9 @@ export function useChaerokSession(isEn: boolean): ChaerokSession {
       }
       try {
         const snap = await getDoc(doc(db(), 'users', u.uid));
-        setTier(snap.exists() && snap.get('tier') === 'mind' ? 'mind' : 'free');
+        const raw = snap.exists() ? snap.get('tier') : null;
+        // 'mind'는 등급 이름을 'pro'로 바꾸기 전에 부여된 계정 — 받아준다 (앱 remoteTier.ts와 같은 규칙)
+        setTier(raw === 'pro' || raw === 'mind' ? 'pro' : 'free');
       } catch {
         setTier('free');
       }

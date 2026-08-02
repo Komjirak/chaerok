@@ -94,6 +94,8 @@ export interface RemoteNote {
   type: 'text' | 'url' | 'image' | 'todo';
   sourceApp: string | null;
   rawContent: string;
+  /** Pro 이미지 동기화 — Storage에 올린 최적화본의 다운로드 URL (앱 imageStorage.ts) */
+  imageUrl?: string | null;
   sourceUrl: string | null;
   title: string;
   summary: string;
@@ -105,7 +107,8 @@ export interface RemoteNote {
   deleted?: boolean;
 }
 
-export type Tier = 'free' | 'mind';
+/** 'mind'는 pro의 옛 이름 — 서버 문서에 둘 다 존재하므로 읽는 쪽이 pro로 정규화한다 */
+export type Tier = 'free' | 'pro';
 
 /**
  * 추적 파라미터를 **표시에서만** 걷어낸다.
