@@ -18,6 +18,7 @@ import { PrivacyPolicy } from '@/pages/PrivacyPolicy';
 import { DeleteAccount } from '@/pages/DeleteAccount';
 import { Notes } from '@/pages/Notes';
 import { Save } from '@/pages/Save';
+import { Admin } from '@/pages/Admin';
 
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -64,6 +65,8 @@ function Shell() {
         <Route path="/terms" element={<Terms />} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
         <Route path="/notes" element={<Notes />} />
+        {/* 운영자용 — 어디에도 링크하지 않는다. 접근 제어는 서버(whois 함수)가 한다 */}
+        <Route path="/admin" element={<Admin />} />
         {/* Play·App Store가 요구하는 계정 삭제 안내 — 주소를 바꾸면 스토어 설정도 함께 고쳐야 한다 */}
         <Route path="/delete-account" element={<DeleteAccount />} />
       </Routes>
