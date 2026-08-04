@@ -17,16 +17,6 @@ async function startServer() {
     })
   );
 
-  app.use(
-    "/api/whois",
-    createProxyMiddleware({
-      target: "https://us-central1-chaerok-c0830.cloudfunctions.net",
-      changeOrigin: true,
-      pathRewrite: { "^/api/whois": "/whois" },
-      secure: true,
-    })
-  );
-
   if (process.env.NODE_ENV !== "production") {
     const vite = await createViteServer({
       server: { middlewareMode: true },
