@@ -16,7 +16,7 @@ export function PrivacyPolicy() {
           {isEn ? 'Privacy Policy' : '개인정보 처리방침'}
         </h1>
         <p className="text-sm text-ink-muted mb-12">
-          {isEn ? 'Last Updated: July 26, 2026 · Effective: July 26, 2026' : '최종 개정일 2026년 7월 26일 · 시행일 2026년 7월 26일'}
+          {isEn ? 'Last Updated: August 4, 2026 · Effective: July 26, 2026' : '최종 개정일 2026년 8월 4일 · 시행일 2026년 7월 26일'}
         </p>
 
         <div className="text-lg text-ink-dark leading-relaxed mb-16 p-6 bg-surface-amber/30 rounded-2xl border border-surface-amber/50">
@@ -75,8 +75,8 @@ export function PrivacyPolicy() {
             <h2 className="text-2xl font-serif mb-4 text-ink-dark">{isEn ? '3. Note Synchronization' : '3. 노트 동기화 (여러 기기에서 이어 쓰기)'}</h2>
             <p className="text-ink-muted leading-relaxed mb-6">
               {isEn
-                ? 'If you select "Process in Cloud" and log in, your thought notes are kept in the Chaerok database so you can continue writing on other devices with the same account.'
-                : '"클라우드에서 처리"를 선택하고 로그인하신 경우, 같은 계정의 다른 기기에서도 이어 쓸 수 있도록 생각 노트가 채록의 데이터베이스에 보관됩니다.'
+                ? 'If you subscribe to Chaerok Pro, sign in, and turn on "Automatic cloud sync", your thought notes are kept in the Chaerok database so you can continue writing on other devices with the same account.'
+                : '채록 Pro를 구독하고 로그인한 상태에서 "자동 클라우드 동기화"를 켜신 경우, 같은 계정의 다른 기기에서도 이어 쓸 수 있도록 생각 노트가 채록의 데이터베이스에 보관됩니다.'
               }
             </p>
             
@@ -91,10 +91,12 @@ export function PrivacyPolicy() {
                 <tbody className="text-ink-muted">
                   <tr>
                     <td className="p-4 border-b border-surface-amber/50">
-                      {isEn ? 'Original records, titles, summaries, tags, folder names' : '기록 원문, 제목, 요약, 태그, 폴더 이름'}
+                      {isEn
+                        ? 'Original records, titles, summaries, tags, folder names — and for notes with a photo, a downsized copy of the image (Firebase Storage)'
+                        : '기록 원문, 제목, 요약, 태그, 폴더 이름 — 사진을 첨부한 기록은 전송·표시용으로 줄인 이미지 사본(Firebase Storage)도 함께'}
                     </td>
                     <td className="p-4 border-b border-surface-amber/50">
-                      {isEn ? 'Attached image files (kept only on device)' : '첨부하신 이미지 파일 자체 (기기에만 남습니다)'}
+                      {isEn ? 'Original image files (kept only on device)' : '이미지 원본 파일 (기기에만 남습니다)'}
                     </td>
                   </tr>
                 </tbody>
@@ -133,8 +135,8 @@ export function PrivacyPolicy() {
             <h2 className="text-2xl font-serif mb-4 text-ink-dark">{isEn ? '6. Information Not Collected' : '6. 수집하지 않는 정보'}</h2>
             <p className="text-ink-muted leading-relaxed">
               {isEn
-                ? 'The Company does not collect location information, contacts, or advertising identifiers without user consent. "Share usage analytics" is disabled by default, and even if enabled, only anonymous statistics that cannot identify individuals are sent.'
-                : '회사는 이용자의 동의 없이 위치 정보, 연락처, 광고 식별자를 수집하지 않습니다. "사용 분석 공유"는 기본값이 꺼짐이며, 켠 경우에도 개인을 식별할 수 없는 익명 통계만 전송됩니다.'
+                ? 'The Company does not collect your location, contacts, or advertising identifiers, and does not use behavioral analytics or advertising tools. We also do not knowingly collect personal information from children under the age of 14.'
+                : '회사는 이용자의 위치 정보, 연락처, 광고 식별자를 수집하지 않으며, 별도의 행동 분석·광고 도구를 사용하지 않습니다. 또한 만 14세 미만 아동의 개인정보를 의도적으로 수집하지 않습니다.'
               }
             </p>
           </article>
@@ -167,8 +169,8 @@ export function PrivacyPolicy() {
                 <tbody className="text-ink-muted">
                   <tr className="border-b border-surface-amber/50">
                     <td className="p-4">Google LLC<br/><span className="text-sm opacity-70">(Firebase)</span></td>
-                    <td className="p-4">{isEn ? 'Authentication, DB, Server' : '인증, 데이터베이스, 서버 운영'}</td>
-                    <td className="p-4">{isEn ? 'Account ID, Sync Data' : '계정 식별자, 동기화를 켠 경우의 노트 데이터'}</td>
+                    <td className="p-4">{isEn ? 'Authentication, DB, file storage, server' : '인증, 데이터베이스, 파일 저장(Storage), 서버 운영'}</td>
+                    <td className="p-4">{isEn ? 'Account ID; synced notes and image copies' : '계정 식별자, 동기화를 켠 경우의 노트 데이터와 이미지 사본'}</td>
                   </tr>
                   <tr className="border-b border-surface-amber/50">
                     <td className="p-4">Google LLC<br/><span className="text-sm opacity-70">(Gemini API)</span></td>
@@ -226,7 +228,12 @@ export function PrivacyPolicy() {
           <article id="s10" className="scroll-mt-24">
             <h2 className="text-2xl font-serif mb-4 text-ink-dark">{isEn ? '10. Inquiries' : '10. 문의'}</h2>
             <p className="text-ink-muted leading-relaxed mb-4">
-              {isEn ? "Privacy-related inquiries can be submitted through the official Komjirak Studio channel (" : "개인정보 관련 문의는 꼼지락 스튜디오 공식 채널 ("}
+              {isEn
+                ? 'Privacy Officer: Eunae Park (komjirak.studio@gmail.com)'
+                : '개인정보 보호책임자: 박은애 (komjirak.studio@gmail.com)'}
+            </p>
+            <p className="text-ink-muted leading-relaxed mb-4">
+              {isEn ? "Privacy-related inquiries can be submitted to the email above or through the official Komjirak Studio channel (" : "개인정보 관련 문의는 위 이메일 또는 꼼지락 스튜디오 공식 채널 ("}
               <a href="https://komjirak.studio" target="_blank" rel="noopener noreferrer" className="text-chaerok-600 hover:underline">komjirak.studio</a>
               {isEn ? ")." : ")을 통해 접수할 수 있습니다."}
             </p>
