@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { Share2, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import logoImg from '@/assets/logo.png';
+import { LANG_STORAGE_KEY } from '@/i18n';
 
 export function Footer() {
   const { t, i18n } = useTranslation();
@@ -33,6 +34,13 @@ export function Footer() {
   const handleLanguage = () => {
     const nextLang = i18n.language === 'ko' ? 'en' : 'ko';
     i18n.changeLanguage(nextLang);
+    // 저장해 둬야 새로고침·다른 페이지 이동 때도 유지된다 — 안 그러면
+    // 매번 지역 기준 초기값(i18n.ts)으로 되돌아간다
+    try {
+      localStorage.setItem(LANG_STORAGE_KEY, nextLang);
+    } catch {
+      // 프라이빗 모드 등 — 이번 방문 동안만 유지된다
+    }
     showMessage(nextLang === 'ko' ? '언어가 한국어로 변경되었습니다.' : 'Language changed to English.');
   };
 
