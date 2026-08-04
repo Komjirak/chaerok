@@ -82,7 +82,7 @@ export function Notes() {
     const needle = q.trim().toLowerCase();
     if (needle) {
       out = out.filter((n) =>
-        [n.title, n.summary, n.rawContent, (n.tags ?? []).map((t) => t.name).join(' ')]
+        [n.title, n.summary, n.memo ?? '', n.rawContent, (n.tags ?? []).map((t) => t.name).join(' ')]
           .join(' ')
           .toLowerCase()
           .includes(needle),
@@ -456,6 +456,13 @@ function Detail({
             </Block>
           ) : null}
 
+          {/* 사용자가 담기 창에서 적은 한 줄 — 있을 때만. AI 요약과 섞지 않는다 */}
+          {note.memo?.trim() ? (
+            <Block label={isEn ? 'Memo' : '메모'}>
+              <p className="whitespace-pre-wrap leading-relaxed">{note.memo}</p>
+            </Block>
+          ) : null}
+
           {note.summary ? (
             <Block label={isEn ? 'Summary' : 'AI 요약'}>
               <p className="whitespace-pre-wrap leading-relaxed">{note.summary}</p>
@@ -485,7 +492,8 @@ function Detail({
             </Block>
           ) : null}
 
-          {note.rawContent ? (
+          {/* 메모와 같은 내용이면 두 번 보여줄 이유가 없다 (앱 note/[id].tsx와 같은 규칙) */}
+          {note.rawContent && note.rawContent.trim() !== (note.memo ?? '').trim() ? (
             <Block label={isEn ? 'Original' : '원본'}>
               <p className="text-sm text-ink-muted whitespace-pre-wrap bg-surface-amber/30 rounded-xl px-4 py-3.5 max-h-80 overflow-y-auto leading-relaxed">
                 {note.rawContent}

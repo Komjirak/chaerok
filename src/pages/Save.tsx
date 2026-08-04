@@ -60,8 +60,15 @@ export function Save() {
   }, [isEn]);
 
   const save = async () => {
-    const content = [memo.trim(), page.text, page.title].filter(Boolean).join('\n\n').slice(0, 20_000);
-    if (!content) {
+    // 긁어온 페이지 본문 — '원본'에 남는 값. 메모는 여기 섞지 않는다: 섞으면
+    // 앱 상세 화면에서 요약·원문·메모가 같은 내용을 여러 번 보여준다
+    // (모바일 앱의 memo 필드 분리와 같은 이유, src/agent/orchestrator.ts 참고).
+    const pageContent = [page.text, page.title].filter(Boolean).join('\n\n').slice(0, 20_000);
+    const trimmedMemo = memo.trim();
+    // 분석 요청에는 메모를 맥락으로 얹는다 — "왜 담는지"를 알아야 제목·폴더·
+    // 태그가 의도에 맞게 나온다. 저장되는 값과는 별개다.
+    const analyzeInput = [trimmedMemo, pageContent].filter(Boolean).join('\n\n');
+    if (!analyzeInput) {
       setWhy(isEn ? 'Nothing to save from this page.' : '담을 내용을 찾지 못했어요.');
       return setStep('fail');
     }
@@ -74,7 +81,7 @@ export function Save() {
       const res = await fetch('/api/analyze', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ content, sourceUrl: page.url || null, languageInstruction: '' }),
+        body: JSON.stringify({ content: analyzeInput, sourceUrl: page.url || null, languageInstruction: '' }),
       });
 
       // 402·403은 서버가 조용히 거절한 것 — 문구만 오고 수치는 오지 않는다
@@ -105,7 +112,10 @@ export function Save() {
         updatedAt: now,
         type: page.url ? 'url' : 'text',
         sourceApp: 'web-extension',
-        rawContent: content,
+        // 페이지 내용이 없고 메모만 있는 경우(예: 빈 페이지·팝업만 열림) 원본을
+        // 비우지 않는다 — 앱의 이미지+메모 전용 경로와 같은 처리
+        rawContent: pageContent || trimmedMemo,
+        memo: trimmedMemo || null,
         sourceUrl: page.url || null,
         title: analyzed.title,
         summary: analyzed.summary,

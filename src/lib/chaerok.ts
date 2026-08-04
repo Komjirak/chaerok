@@ -94,6 +94,8 @@ export interface RemoteNote {
   type: 'text' | 'url' | 'image' | 'todo';
   sourceApp: string | null;
   rawContent: string;
+  /** 사용자가 함께 적은 한 줄 — 있을 때만 별도 '메모' 섹션으로 보인다 (앱 src/db/types.ts) */
+  memo?: string | null;
   /** Pro 이미지 동기화 — Storage에 올린 최적화본의 다운로드 URL (앱 imageStorage.ts) */
   imageUrl?: string | null;
   sourceUrl: string | null;
