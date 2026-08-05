@@ -32,7 +32,11 @@ export interface ChaerokSession {
 export function useChaerokSession(isEn: boolean): ChaerokSession {
   const [user, setUser] = useState<User | null>(null);
   const [tier, setTier] = useState<Tier>('free');
-  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
+  // 등급은 로그인 확인 뒤 Firestore에서 따로 읽는다. 이 조회가 끝나기 전에
+  // 화면을 그리면 기본값 'free'가 잠깐 보인다 — Pro 사용자에게 무료 안내
+  // 화면이 깜빡이는 원인이라, 조회 중에는 loading으로 묶는다.
+  const [tierPending, setTierPending] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -40,9 +44,10 @@ export function useChaerokSession(isEn: boolean): ChaerokSession {
 
     const unsubscribe = onAuthStateChanged(auth(), async (u) => {
       setUser(u);
+      if (u) setTierPending(true);
       if (!settled) {
         settled = true;
-        setLoading(false);
+        setAuthLoading(false);
       }
       if (!u) {
         setTier('free');
@@ -55,6 +60,8 @@ export function useChaerokSession(isEn: boolean): ChaerokSession {
         setTier(raw === 'pro' || raw === 'mind' ? 'pro' : 'free');
       } catch {
         setTier('free');
+      } finally {
+        setTierPending(false);
       }
     });
 
@@ -66,7 +73,7 @@ export function useChaerokSession(isEn: boolean): ChaerokSession {
       } finally {
         if (!settled) {
           settled = true;
-          setLoading(false);
+          setAuthLoading(false);
         }
       }
     };
@@ -130,6 +137,9 @@ export function useChaerokSession(isEn: boolean): ChaerokSession {
   const signOutNow = async () => {
     await signOut(auth());
   };
+
+  // 로그인 확인 중이거나, 로그인된 사용자의 등급 조회가 아직이면 로딩으로 취급
+  const loading = authLoading || (user !== null && tierPending);
 
   return { user, tier, loading, signIn, signOutNow, error };
 }
