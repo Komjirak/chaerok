@@ -21,6 +21,24 @@ function installId(): string {
   }
 }
 
+/**
+ * 경로 → 이벤트 이름. **정해진 목록에서만 고른다** — 경로를 그대로 보내면
+ * 쿼리스트링(담기 창의 페이지 본문!)이 통계에 섞여 들어간다.
+ */
+const PAGE_EVENTS: Record<string, string> = {
+  '/': 'pv_home',
+  '/notes': 'pv_notes',
+  '/privacy': 'pv_privacy',
+  '/terms': 'pv_terms',
+  '/delete-account': 'pv_delete_account',
+  // '/save'는 여기 없다 — 담기 창은 Save.tsx가 save_open/save_done 퍼널로 따로 센다
+};
+
+export function trackPageView(pathname: string): void {
+  const name = PAGE_EVENTS[pathname];
+  if (name) trackEvent(name, 'web');
+}
+
 /** 실패는 조용히 버린다 — 통계가 저장 흐름을 막으면 안 된다 */
 export function trackEvent(name: string, platform: 'web' | 'ext' = 'web'): void {
   if (import.meta.env.DEV) return;

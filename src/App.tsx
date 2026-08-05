@@ -22,6 +22,7 @@ import { Save } from '@/pages/Save';
 
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { trackPageView } from '@/lib/track';
 
 function Home() {
   const { hash } = useLocation();
@@ -73,9 +74,22 @@ function Shell() {
   );
 }
 
+/**
+ * 경로가 바뀔 때마다 페이지뷰를 센다. Vercel Analytics도 같은 것을 세지만,
+ * 이쪽은 앱·익스텐션과 **같은 집계**로 들어가 운영 대시보드 한 곳에서 보인다.
+ */
+function PageViews() {
+  const { pathname } = useLocation();
+  useEffect(() => {
+    trackPageView(pathname);
+  }, [pathname]);
+  return null;
+}
+
 export default function App() {
   return (
     <BrowserRouter>
+      <PageViews />
       <Routes>
         <Route path="/save" element={<Save />} />
         <Route path="/*" element={<Shell />} />
