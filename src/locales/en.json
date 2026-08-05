@@ -12,15 +12,28 @@
     "try": "Start for Free"
   },
   "hero": {
-    "badge": "Your Digital Knowledge Garden",
-    "title1": "Connect Thoughts,",
-    "title2": "Weave Wisdom",
-    "desc": "Chaerok is an AI-powered second brain that connects your fragmented notes and scraps into a semantic network.",
+    "badge": "Toss it in — Chaerok does the rest",
+    "title1": "Your Second Brain,",
+    "title2": "Chaerok",
+    "desc": "Toss in a thought, a link, or a photo. Chaerok summarizes it, tags it, and connects it to what you've saved — then brings it back in your morning briefing. On-device by default, so your notes never leave your phone.",
     "btnStart": "Start for Free",
     "btnHow": "See How It Works",
     "platformLabel": "Available Platforms",
     "floatingTitle": "Chaerok Summarized It",
-    "floatingDesc": "Chaerok (採錄): To search for and gather necessary words or writings. Turn your scattered thoughts into wisdom."
+    "floatingDesc": "Chaerok (採錄): To search for and gather necessary words or writings. Turn your scattered thoughts into wisdom.",
+    "iosNote": "In review · Coming soon",
+    "androidNote": "Closed beta",
+    "mock": {
+      "userMsg": "A red full moon over the Seoul night sky",
+      "userPhoto": "(shared a photo)",
+      "agentMsg": "I can see it too — that red moon really stands out against the night sky.",
+      "agentFolder": "I filed it in your `Daily/Thoughts` folder.",
+      "noteTitle": "A red full moon over the Seoul night sky…",
+      "noteFolder": "Daily/Thoughts",
+      "tag1": "#fullmoon",
+      "tag2": "#nightsky",
+      "input": "Toss a thought here"
+    }
   },
   "features": {
     "desc": "Focus on the act of recording itself, while Chaerok's intelligent engine automates the rest.",
