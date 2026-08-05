@@ -79,10 +79,14 @@ export function useChaerokSession(isEn: boolean): ChaerokSession {
   const signIn = async () => {
     setError(null);
     const provider = new GoogleAuthProvider();
+    // 리다이렉트는 진짜 모바일 기기에서만. 이전에는 창 폭(<768px)도 조건이라
+    // 익스텐션이 여는 460px 담기 창이 데스크톱 크롬에서 리다이렉트를 탔는데,
+    // 크롬의 서드파티 스토리지 분리 때문에 복귀 후 세션이 남지 않아
+    // "로그인 → 다시 로그인 화면" 무한 루프가 됐다. 데스크톱은 창이 작아도
+    // 팝업 로그인이 정상 동작한다(팝업 차단 시에만 아래에서 리다이렉트 폴백).
     const useRedirect =
       typeof window !== 'undefined' &&
-      (/Android|iPhone|iPad|iPod|Mobile|Tablet/i.test(window.navigator.userAgent) ||
-        window.innerWidth < 768);
+      /Android|iPhone|iPad|iPod/i.test(window.navigator.userAgent);
 
     try {
       if (useRedirect) {

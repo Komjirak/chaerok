@@ -12,6 +12,7 @@ import {
   type NoteTag,
 } from '@/lib/chaerok';
 import logoImg from '@/assets/logo.png';
+import appQr from '@/assets/app-qr.svg';
 
 /**
  * 웹에서 담기 — 크롬 익스텐션이 여는 창.
@@ -38,7 +39,7 @@ interface Analyzed {
 export function Save() {
   const { i18n } = useTranslation();
   const isEn = i18n.language === 'en';
-  const { user, tier, loading, signIn, error: authError } = useChaerokSession(isEn);
+  const { user, tier, loading, signIn, signOutNow, error: authError } = useChaerokSession(isEn);
   const [params] = useSearchParams();
 
   const page = useMemo(
@@ -160,21 +161,58 @@ export function Save() {
             {authError ? <p className="mt-3 text-sm text-chaerok-800">{authError}</p> : null}
           </Msg>
         ) : tier !== 'pro' ? (
-          <Msg
-            icon={<Lock className="w-5 h-5" />}
-            title={isEn ? 'Part of Chaerok Pro' : '채록 Pro에서 쓸 수 있어요'}
-            body={
-              isEn
+          // 로그인은 성공했지만 Pro가 아닌 경우 — 여기서 끝이 아니라 다음 할 일
+          // (앱에서 구독)을 안내한다. 구독은 웹이 아니라 모바일 앱 안에서만
+          // 시작할 수 있으므로 QR로 이어준다.
+          <div className="text-center py-4">
+            <div className="w-11 h-11 mx-auto mb-3.5 rounded-xl bg-surface-amber/60 grid place-items-center text-ink-muted">
+              <Lock className="w-5 h-5" />
+            </div>
+            <h2 className="text-lg font-serif mb-2">
+              {isEn ? 'Signed in — Chaerok Pro unlocks this' : '로그인 완료 — 채록 Pro에서 쓸 수 있어요'}
+            </h2>
+            <p className="text-sm text-ink-muted max-w-xs mx-auto leading-relaxed mb-2">
+              {isEn
                 ? 'Saving from the web and picking it up on your mobile device is a Pro feature.'
-                : '웹에서 담은 기록을 계정에 보관하고 모바일에서 이어 보는 건 Pro의 기능이에요.'
-            }
-          >
+                : '웹에서 담은 기록을 계정에 보관하고 모바일에서 이어 보는 건 채록 Pro의 기능이에요.'}
+            </p>
+            {user.email ? (
+              <p className="text-xs text-ink-muted/80 mb-5 break-all">
+                {isEn ? `Signed in as ${user.email}` : `${user.email} 계정으로 로그인돼 있어요`}
+              </p>
+            ) : null}
+
+            <div className="bg-surface-white border border-surface-amber rounded-xl px-4 py-4 mb-5 text-left flex items-center gap-4">
+              <img
+                src={appQr}
+                alt={isEn ? 'QR code to the Chaerok app page' : '채록 앱 안내 QR 코드'}
+                className="w-24 h-24 rounded-lg border border-surface-amber/60 shrink-0"
+              />
+              <div className="min-w-0">
+                <p className="text-sm font-medium mb-1">
+                  {isEn ? 'Subscribe in the Chaerok app' : '구독은 채록 앱에서 시작해요'}
+                </p>
+                <p className="text-xs text-ink-muted leading-relaxed">
+                  {isEn
+                    ? 'Scan with your phone camera to get the app, then subscribe in Settings → Chaerok Pro. Come back here with the same account.'
+                    : '휴대폰 카메라로 QR을 찍어 앱을 받고, 설정 → 채록 Pro에서 구독을 시작하세요. 같은 계정으로 다시 오면 바로 담을 수 있어요.'}
+                </p>
+              </div>
+            </div>
+
             <a href="/#pricing" target="_blank" rel="noopener noreferrer">
-              <Button variant="outline" className="w-full">
+              <Button variant="outline" className="w-full mb-2.5">
                 {isEn ? 'See plans' : '요금제 보기'}
               </Button>
             </a>
-          </Msg>
+            <button
+              type="button"
+              onClick={signOutNow}
+              className="text-xs text-ink-muted underline underline-offset-2 hover:text-ink-dark"
+            >
+              {isEn ? 'Use a different account' : '다른 계정으로 로그인'}
+            </button>
+          </div>
         ) : step === 'form' ? (
           <>
             <div className="bg-surface-amber/30 border border-surface-amber/60 rounded-xl px-4 py-3.5 mb-4">
