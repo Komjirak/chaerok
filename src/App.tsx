@@ -4,6 +4,7 @@
  */
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import { Header } from '@/components/layout/Header';
 import { Hero } from '@/components/sections/Hero';
 import { Features } from '@/components/sections/Features';
@@ -79,6 +80,8 @@ export default function App() {
         <Route path="/save" element={<Save />} />
         <Route path="/*" element={<Shell />} />
       </Routes>
+      {/* 쿠키리스 페이지뷰·UV — Vercel 대시보드에서 Web Analytics를 켜야 수집된다 */}
+      <Analytics />
     </BrowserRouter>
   );
 }

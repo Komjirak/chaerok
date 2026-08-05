@@ -16,7 +16,7 @@ export function PrivacyPolicy() {
           {isEn ? 'Privacy Policy' : '개인정보 처리방침'}
         </h1>
         <p className="text-sm text-ink-muted mb-12">
-          {isEn ? 'Last Updated: August 4, 2026 · Effective: July 26, 2026' : '최종 개정일 2026년 8월 4일 · 시행일 2026년 7월 26일'}
+          {isEn ? 'Last Updated: August 5, 2026 · Effective: July 26, 2026' : '최종 개정일 2026년 8월 5일 · 시행일 2026년 7월 26일'}
         </p>
 
         <div className="text-lg text-ink-dark leading-relaxed mb-16 p-6 bg-surface-amber/30 rounded-2xl border border-surface-amber/50">
@@ -135,8 +135,8 @@ export function PrivacyPolicy() {
             <h2 className="text-2xl font-serif mb-4 text-ink-dark">{isEn ? '6. Information Not Collected' : '6. 수집하지 않는 정보'}</h2>
             <p className="text-ink-muted leading-relaxed">
               {isEn
-                ? 'The Company does not collect your location, contacts, or advertising identifiers, and does not use behavioral analytics or advertising tools. We also do not knowingly collect personal information from children under the age of 14.'
-                : '회사는 이용자의 위치 정보, 연락처, 광고 식별자를 수집하지 않으며, 별도의 행동 분석·광고 도구를 사용하지 않습니다. 또한 만 14세 미만 아동의 개인정보를 의도적으로 수집하지 않습니다.'
+                ? 'The Company does not collect your location, contacts, or advertising identifiers, and does not use external behavioral-analytics or advertising tools such as Google Analytics. For service improvement, we collect only anonymous usage statistics (screen views and feature-use counts) on our own servers, never linked to your account or note content. We also do not knowingly collect personal information from children under the age of 14.'
+                : '회사는 이용자의 위치 정보, 연락처, 광고 식별자를 수집하지 않으며, Google Analytics 같은 외부 행동 분석·광고 도구를 사용하지 않습니다. 서비스 개선을 위한 사용 통계(화면 열람·기능 사용 횟수)는 계정이나 기록 내용과 연결되지 않는 익명 형태로만 자체 수집합니다. 또한 만 14세 미만 아동의 개인정보를 의도적으로 수집하지 않습니다.'
               }
             </p>
           </article>

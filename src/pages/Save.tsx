@@ -13,6 +13,7 @@ import {
 } from '@/lib/chaerok';
 import logoImg from '@/assets/logo.png';
 import appQr from '@/assets/app-qr.svg';
+import { trackEvent } from '@/lib/track';
 
 /**
  * 웹에서 담기 — 크롬 익스텐션이 여는 창.
@@ -59,6 +60,11 @@ export function Save() {
   useEffect(() => {
     document.title = isEn ? 'Save to Chaerok' : '채록에 담기';
   }, [isEn]);
+
+  // 담기 퍼널의 시작점 — 성공(save_done)과 짝을 이뤄 이탈이 보인다
+  useEffect(() => {
+    trackEvent('save_open', 'ext');
+  }, []);
 
   const save = async () => {
     // 긁어온 페이지 본문 — '원본'에 남는 값. 메모는 여기 섞지 않는다: 섞으면
@@ -128,6 +134,7 @@ export function Save() {
 
       setResult(analyzed);
       setStep('done');
+      trackEvent('save_done', 'ext');
     } catch {
       setWhy(isEn ? 'Connection dropped. Try again in a moment.' : '연결이 끊겼어요. 잠시 뒤 다시 시도해 주세요.');
       setStep('fail');
