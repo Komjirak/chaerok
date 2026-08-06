@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 
 const APP_STORE_URL = 'https://apps.apple.com/kr/app/id6794663892';
 const PLAY_TESTING_URL = 'https://play.google.com/apps/testing/com.chaerok.komjirak';
+/** 웹스토어 승인 완료(2026-08-05) — 소개 절로 스크롤하지 않고 바로 설치로 보낸다 */
+const CHROME_STORE_URL = 'https://chromewebstore.google.com/detail/pnndjhdcffpjmekjiknakoakablpocli';
 
 function BackgroundElements() {
   return (
@@ -181,8 +183,9 @@ export function Hero() {
                 <Button onClick={() => navigate('/notes')} variant="outline" size="sm" className={storeButton}>
                   <span className="font-semibold">Web App</span>
                 </Button>
-                <Button onClick={() => navigate('/#extension')} variant="outline" size="sm" className={storeButton}>
+                <Button onClick={() => window.open(CHROME_STORE_URL, '_blank', 'noopener')} variant="outline" size="sm" className={storeButton}>
                   <span className="font-semibold">Chrome Extension</span>
+                  <span className="text-[10px] font-normal text-ink-muted">{t('hero.chromeNote')}</span>
                 </Button>
               </div>
             </div>

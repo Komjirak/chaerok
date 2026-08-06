@@ -33,7 +33,8 @@
       "tag1": "#fullmoon",
       "tag2": "#nightsky",
       "input": "Toss a thought here"
-    }
+    },
+    "chromeNote": "Web Store"
   },
   "features": {
     "desc": "Focus on the act of recording itself, while Chaerok's intelligent engine automates the rest.",

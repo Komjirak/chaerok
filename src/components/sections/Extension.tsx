@@ -8,11 +8,14 @@ import { useExtension } from '@/hooks/useExtension';
 /**
  * 크롬 익스텐션 안내 + 원터치 설치 버튼.
  *
- * 스토어 등록 전이라 지금은 zip을 받아 압축을 풀고 얹는 방식이다.
- * 등록이 끝나면 아래 상수 하나에 스토어 주소를 넣으면 되고, 그 순간
- * 버튼이 진짜 한 번 누르기(스토어 설치)로 바뀐다 — 다른 곳은 손대지 않는다.
+ * 2026-08-05 웹스토어 승인 — 이 주소가 채워진 순간부터 버튼이 스토어 설치
+ * 한 번 누르기로 바뀐다. 아래 zip 경로는 스토어가 응답하지 않을 때를 위한
+ * 폴백으로 남겨둔다(주소를 비우면 그 흐름으로 되돌아간다).
+ *
+ * utm은 붙이지 않는다 — 스토어가 「링크 복사」에 얹어주는 값이라 우리 유입
+ * 분석에 쓰이지도 않고, 주소만 길어진다.
  */
-const CHROME_STORE_URL = '';
+const CHROME_STORE_URL = 'https://chromewebstore.google.com/detail/pnndjhdcffpjmekjiknakoakablpocli';
 
 const EXTENSION_ZIP = '/chaerok-extension.zip';
 
