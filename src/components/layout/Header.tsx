@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocalePath } from '@/lib/localePath';
 import { Button } from '../ui/Button';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +11,8 @@ export function Header() {
   const { t } = useTranslation();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  // 영어 페이지에서는 링크도 /en 아래로 — 안 그러면 메뉴 한 번에 한국어로 떨어진다
+  const lp = useLocalePath();
 
   // Close mobile menu on navigation
   useEffect(() => {
@@ -22,22 +25,22 @@ export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full backdrop-blur-md bg-surface-paper/80 border-b border-surface-amber/30">
       <div className="max-w-[1200px] mx-auto px-5 lg:px-10 h-16 flex items-center justify-between">
-        <Link to="/" onClick={closeMenu} className="flex items-center gap-2 text-chaerok-600 hover:text-chaerok-800 transition-colors">
+        <Link to={lp("/")} onClick={closeMenu} className="flex items-center gap-2 text-chaerok-600 hover:text-chaerok-800 transition-colors">
           <img src={logoImg} alt="채록 로고" className="w-8 h-8 object-contain" />
           <span className="font-serif font-semibold text-xl tracking-tight">{t('header.title')}</span>
         </Link>
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-8">
-          <Link to="/#features" className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.features')}</Link>
-          <Link to="/#ontology" className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.ontology')}</Link>
-          <Link to="/#pricing" className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.pricing')}</Link>
-          <Link to="/#faq" className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.faq')}</Link>
+          <Link to={lp("/#features")} className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.features')}</Link>
+          <Link to={lp("/#ontology")} className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.ontology')}</Link>
+          <Link to={lp("/#pricing")} className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.pricing')}</Link>
+          <Link to={lp("/#faq")} className="text-sm font-medium text-ink-muted hover:text-chaerok-600 transition-colors">{t('header.nav.faq')}</Link>
         </nav>
         
         <div className="flex items-center gap-3">
           <div className="hidden sm:block">
-            <Link to="/notes"><Button size="sm">{t('header.try')}</Button></Link>
+            <Link to={lp("/notes")}><Button size="sm">{t('header.try')}</Button></Link>
           </div>
 
           {/* Mobile Hamburger Toggle Button */}
@@ -92,7 +95,7 @@ export function Header() {
                 {t('header.nav.faq')}
               </Link>
               <div className="pt-2 sm:hidden">
-                <Link to="/notes" onClick={closeMenu} className="w-full"><Button size="sm" className="w-full justify-center">{t('header.try')}</Button></Link>
+                <Link to={lp("/notes")} onClick={closeMenu} className="w-full"><Button size="sm" className="w-full justify-center">{t('header.try')}</Button></Link>
               </div>
             </nav>
           </motion.div>

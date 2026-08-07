@@ -4,9 +4,14 @@ import { Share2, Globe } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import logoImg from '@/assets/logo.png';
 import { LANG_STORAGE_KEY } from '@/i18n';
+import { useLocalePath, counterpartPath } from '@/lib/localePath';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export function Footer() {
   const { t, i18n } = useTranslation();
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const lp = useLocalePath();
   const [message, setMessage] = useState<string | null>(null);
 
   const showMessage = (msg: string) => {
@@ -34,12 +39,20 @@ export function Footer() {
   const handleLanguage = () => {
     const nextLang = i18n.language === 'ko' ? 'en' : 'ko';
     i18n.changeLanguage(nextLang);
-    // 저장해 둬야 새로고침·다른 페이지 이동 때도 유지된다 — 안 그러면
-    // 매번 지역 기준 초기값(i18n.ts)으로 되돌아간다
+    // 저장해 둬야 새로고침·다른 페이지 이동 때도 유지된다. 저장된 선택이
+    // 있으면 LanguageGate의 자동 전환도 더는 끼어들지 않는다.
     try {
       localStorage.setItem(LANG_STORAGE_KEY, nextLang);
     } catch {
       // 프라이빗 모드 등 — 이번 방문 동안만 유지된다
+    }
+    /*
+      언어가 주소에 있으므로 주소도 함께 옮긴다 — 안 옮기면 `/en`에서 한국어가
+      뜨거나 그 반대가 되어, 사용자가 본 화면과 공유되는 링크가 어긋난다.
+      담기 창·생각 노트는 언어 주소가 없으므로 그대로 둔다.
+    */
+    if (pathname !== '/save' && pathname !== '/notes') {
+      navigate(counterpartPath(pathname, nextLang), { replace: true });
     }
     showMessage(nextLang === 'ko' ? '언어가 한국어로 변경되었습니다.' : 'Language changed to English.');
   };
@@ -54,9 +67,9 @@ export function Footer() {
           </div>
           
           <div className="flex flex-wrap gap-8 text-sm text-ink-muted font-medium">
-            <Link to="/privacy" className="hover:text-ink-dark transition-colors">{t('footer.link.privacy')}</Link>
-            <Link to="/terms" className="hover:text-ink-dark transition-colors">{t('footer.link.terms')}</Link>
-            <Link to="/delete-account" className="hover:text-ink-dark transition-colors">{t('footer.link.deleteAccount')}</Link>
+            <Link to={lp("/privacy")} className="hover:text-ink-dark transition-colors">{t('footer.link.privacy')}</Link>
+            <Link to={lp("/terms")} className="hover:text-ink-dark transition-colors">{t('footer.link.terms')}</Link>
+            <Link to={lp("/delete-account")} className="hover:text-ink-dark transition-colors">{t('footer.link.deleteAccount')}</Link>
             <a href="https://komjirak.studio" target="_blank" rel="noopener noreferrer" className="hover:text-ink-dark transition-colors">{t('footer.link.contact')}</a>
           </div>
           

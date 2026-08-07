@@ -21,8 +21,10 @@ import { Notes } from '@/pages/Notes';
 import { Save } from '@/pages/Save';
 
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { trackPageView } from '@/lib/track';
+import { isEnglishPath, savedLanguage, regionLanguage } from '@/i18n';
 
 function Home() {
   const { hash } = useLocation();
@@ -61,17 +63,56 @@ function Shell() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
+      {/*
+        경로가 상대라서 이 표 하나가 `/`와 `/en` 아래에서 그대로 쓰인다 —
+        영어용 화면을 따로 만들지 않는다(만들면 곧 어긋난다).
+      */}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/notes" element={<Notes />} />
+        <Route path="" element={<Home />} />
+        <Route path="terms" element={<Terms />} />
+        <Route path="privacy" element={<PrivacyPolicy />} />
+        <Route path="notes" element={<Notes />} />
         {/* Play·App Store가 요구하는 계정 삭제 안내 — 주소를 바꾸면 스토어 설정도 함께 고쳐야 한다 */}
-        <Route path="/delete-account" element={<DeleteAccount />} />
+        <Route path="delete-account" element={<DeleteAccount />} />
       </Routes>
       <Footer />
     </div>
   );
+}
+
+/**
+ * 주소와 i18n 언어를 맞추고, 필요하면 언어별 주소로 한 번 보낸다.
+ *
+ * 규칙은 둘뿐이다.
+ * 1. **주소가 언어를 정한다.** `/en/...`이면 영어, 그 밖은 한국어.
+ *    한국어 주소를 영어로 렌더링하던 예전 방식이 구글봇에게 언어 불일치를
+ *    만들었다(정적 HTML·메타는 한국어인데 렌더링 결과는 영어).
+ * 2. **저장된 선택이 없는 방문자만** 지역에 따라 `/en`으로 한 번 옮긴다
+ *    (PO 결정: 한국 외 지역은 영어로 맞이한다). `replace`로 보내 뒤로가기가
+ *    무한 왕복이 되지 않게 한다. 한 번이라도 언어를 고른 사람은 옮기지 않는다.
+ */
+function LanguageGate() {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { i18n } = useTranslation();
+  const english = isEnglishPath(pathname);
+  // 개인용 화면은 주소에 언어를 붙이지 않는다 — 저장된 선택·지역을 그대로 따른다
+  const languageFreePath = pathname === '/save' || pathname === '/notes';
+
+  useEffect(() => {
+    if (languageFreePath) return;
+    const want = english ? 'en' : 'ko';
+    if (i18n.language !== want) void i18n.changeLanguage(want);
+  }, [english, languageFreePath, i18n]);
+
+  useEffect(() => {
+    if (english || languageFreePath) return;
+    if (savedLanguage()) return;
+    if (regionLanguage() === 'ko') return;
+    navigate(`/en${pathname === '/' ? '' : pathname}`, { replace: true });
+  }, [english, languageFreePath, pathname, navigate]);
+
+  return null;
 }
 
 /**
@@ -90,8 +131,12 @@ export default function App() {
   return (
     <BrowserRouter>
       <PageViews />
+      <LanguageGate />
       <Routes>
         <Route path="/save" element={<Save />} />
+        {/* 언어별 주소. 두 갈래가 같은 Shell을 쓴다 */}
+        <Route path="/en" element={<Shell />} />
+        <Route path="/en/*" element={<Shell />} />
         <Route path="/*" element={<Shell />} />
       </Routes>
       {/* 쿠키리스 페이지뷰·UV — Vercel 대시보드에서 Web Analytics를 켜야 수집된다 */}
