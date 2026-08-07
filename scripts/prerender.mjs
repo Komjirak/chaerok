@@ -24,7 +24,11 @@ import { fileURLToPath } from 'node:url';
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
 const SITE = 'https://chaerok.komjirak.studio';
-const OG_IMAGE = `${SITE}/og-cover.png`; // 1200x630
+/**
+ * 링크 미리보기 이미지 — 언어별로 다른 파일을 쓴다(한국어 워드마크/영문 워드마크).
+ * 스토어 피처 그래픽과 같은 얼굴이다. 만드는 법은 scripts/og-cover.py.
+ */
+const OG_IMAGE = { ko: `${SITE}/og-cover.png`, en: `${SITE}/og-cover-en.png` };
 
 const L = {
   ko: JSON.parse(readFileSync(path.join(ROOT, 'src/locales/ko.json'), 'utf8')),
@@ -337,15 +341,23 @@ function head(lang, p) {
     `<meta property="og:url" content="${url}" />`,
     `<meta property="og:title" content="${esc(meta.title)}" />`,
     `<meta property="og:description" content="${esc(meta.desc)}" />`,
-    `<meta property="og:image" content="${OG_IMAGE}" />`,
+    `<meta property="og:image" content="${OG_IMAGE[lang]}" />`,
+    `<meta property="og:image:secure_url" content="${OG_IMAGE[lang]}" />`,
     '<meta property="og:image:width" content="1200" />',
     '<meta property="og:image:height" content="630" />',
     '<meta property="og:image:type" content="image/png" />',
     `<meta property="og:image:alt" content="${lang === 'ko' ? '채록 — 던지면 AI가 정리하는 두 번째 뇌' : 'Chaerok — the second brain that files itself'}" />`,
+    /*
+      카카오톡은 og:image의 **절대 URL과 크기 태그**를 보고 큰 카드로 그린다.
+      상대경로나 크기 누락이면 작은 썸네일로 떨어진다(예전에 정사각 아이콘을
+      상대경로로 두어 미리보기가 깨졌다). article:author는 카톡이 출처 줄에
+      쓰는 값이라 브랜드명을 넣어 준다.
+    */
+    `<meta property="article:author" content="${lang === 'ko' ? '꼼지락 스튜디오' : 'Komjirak Studio'}" />`,
     '<meta name="twitter:card" content="summary_large_image" />',
     `<meta name="twitter:title" content="${esc(meta.title)}" />`,
     `<meta name="twitter:description" content="${esc(meta.desc)}" />`,
-    `<meta name="twitter:image" content="${OG_IMAGE}" />`,
+    `<meta name="twitter:image" content="${OG_IMAGE[lang]}" />`,
     ld,
   ]
     .filter(Boolean)
