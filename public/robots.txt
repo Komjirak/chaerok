@@ -1,4 +1,43 @@
 User-agent: *
 Allow: /
+Disallow: /admin
+Disallow: /api/
+
+# AI 검색·요약 크롤러는 막지 않는다.
+# 소개 페이지는 공개 정보이고, 정확한 인용이 잘못된 추측보다 낫다.
+# (차단하려면 아래 각 항목을 Disallow: / 로 바꾼다. 학습 거부만 하려면
+#  Google-Extended·Applebot-Extended 두 개만 막으면 된다 — 검색 노출은 유지된다.)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 Sitemap: https://chaerok.komjirak.studio/sitemap.xml
-Host: https://chaerok.komjirak.studio

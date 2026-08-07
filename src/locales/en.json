@@ -40,7 +40,7 @@
     "desc": "Focus on the act of recording itself, while Chaerok's intelligent engine automates the rest.",
     "f1": {
       "title": "Rapid Capture",
-      "desc": "Record instantly, anytime. Safely store inspiration in any form—text, images, voice—without missing a beat."
+      "desc": "Capture any moment instantly. Just drop in text, links, or images and Chaerok keeps them safe."
     },
     "f2": {
       "title": "Intelligent Summary",
@@ -139,12 +139,12 @@
       "desc": "Data summarization and analysis are processed safely on your device, not the cloud."
     },
     "f2": {
-      "title": "Seamless Sync",
-      "desc": "Synchronized in real-time across mobile, tablet, and desktop for an uninterrupted recording environment."
+      "title": "Pick Up on Any Device",
+      "desc": "Turn on cloud sync with Chaerok Pro and the same notes follow you across phone, tablet, and web."
     },
     "f3": {
-      "title": "E2E Encryption",
-      "desc": "All synchronized data is strictly protected with End-to-End Encryption."
+      "title": "On Your Device First",
+      "desc": "Notes are saved on your device first. You decide whether anything goes to the cloud, and data is encrypted in transit and at rest."
     },
     "mock": {
       "title": "Chaerok",
@@ -156,7 +156,7 @@
   "faq": {
     "title": "Frequently Asked Questions",
     "q1": "Can I use it for free?",
-    "a1": "Chaerok provides basic recording and syncing features for free forever. Advanced features like AI briefings and semantic ontology are available through premium plans.",
+    "a1": "The core — capturing, organizing, and searching — is free forever and runs on your device without an account. Long-context understanding, reading images, and syncing across devices come with Chaerok Pro.",
     "q2": "Is my data kept safe?",
     "a2": "Your notes are stored on your device first. Sign in and turn on Chaerok Pro's cloud sync to back them up automatically and continue on other devices. However, bulk export features like Markdown or CSV formats are planned to be supported gradually.",
     "q3": "Do you support languages other than Korean?",

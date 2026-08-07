@@ -3,44 +3,63 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>채록(chaerok)</title>
-    <meta name="description" content="채록(chaerok)은 텍스트, URL, 이미지를 AI가 자동으로 요약·분류·연결하는 개인 지식관리 애플리케이션(세컨드 브레인)입니다." />
-    <meta name="keywords" content="메모,AI메모,세컨브레인,두번째뇌,온톨로지,지식관리,PKM,노트,아이디어기록,자동요약,AI에이전트,채록" />
-    <meta name="robots" content="index, follow" />
+    <!--
+      아래 두 마커 사이는 빌드 뒤 scripts/prerender.mjs가 라우트별로 갈아 끼운다.
+      여기 값은 개발 서버에서 보이는 기본값이자, 프리렌더가 실패했을 때의 안전망이다.
+    -->
+    <!--seo:head:start-->
+    <title>채록 — 던지면 AI가 정리하는 당신의 두 번째 뇌 | 메모·링크·스크린샷 자동 요약</title>
+    <meta name="description" content="채록은 텍스트·링크·사진을 던져 넣으면 AI 에이전트 채록이가 요약·태그·분류하고 관련 기록끼리 이어주는 개인 지식관리(두 번째 뇌) 앱입니다. 기본은 기기 안 처리이고, 무료로 시작할 수 있습니다." />
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1" />
     <link rel="canonical" href="https://chaerok.komjirak.studio/" />
-    <meta property="og:title" content="채록(chaerok)" />
-    <meta property="og:description" content="채록(chaerok)은 텍스트, URL, 이미지를 AI가 자동으로 요약·분류·연결하는 개인 지식관리 애플리케이션입니다." />
-    <meta property="og:image" content="/icon.png" />
+    <meta name="theme-color" content="#C9603A" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="채록(chaerok)" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:url" content="https://chaerok.komjirak.studio/" />
+    <meta property="og:title" content="채록 — 던지면 AI가 정리하는 당신의 두 번째 뇌" />
+    <meta property="og:description" content="텍스트·링크·사진을 던져 넣으면 채록이가 요약하고 태그를 달아 정리합니다. 기본은 기기 안 처리." />
+    <meta property="og:image" content="https://chaerok.komjirak.studio/icon.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="1200" />
     <meta property="og:image:type" content="image/png" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="채록(chaerok)" />
-    <meta name="twitter:description" content="채록(chaerok)은 텍스트, URL, 이미지를 AI가 자동으로 요약·분류·연결하는 개인 지식관리 애플리케이션입니다." />
-    <meta name="twitter:image" content="/icon.png" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="채록 — 던지면 AI가 정리하는 당신의 두 번째 뇌" />
+    <meta name="twitter:description" content="텍스트·링크·사진을 던져 넣으면 채록이가 요약하고 태그를 달아 정리합니다. 기본은 기기 안 처리." />
+    <meta name="twitter:image" content="https://chaerok.komjirak.studio/icon.png" />
+    <!--seo:head:end-->
+    <meta name="keywords" content="메모,AI메모,세컨브레인,두번째뇌,온톨로지,지식관리,PKM,노트,아이디어기록,자동요약,AI에이전트,채록" />
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="shortcut icon" href="/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+      /*
+        프리렌더된 정적 본문의 스타일. React가 마운트되면 이 내용은 통째로
+        교체되므로(root.render가 컨테이너를 비운다) 잠깐만 보인다 —
+        그 잠깐이 어색하지 않을 만큼만 꾸민다.
+      */
+      #root .s-top, #root .s-foot { color: #6f6255; font-size: 14px; }
+      #root .s-brand { font-weight: 700; color: #b06f00; }
+      #root .s-lede { font-size: 18px; }
+      #root .s-note { color: #6f6255; font-size: 14px; }
+      #app-static { max-width: 720px; margin: 0 auto; padding: 40px 24px 64px;
+        font-family: 'Noto Sans KR', system-ui, -apple-system, sans-serif;
+        background: #fffdf8; color: #2d2417; line-height: 1.7; }
+      #app-static h1 { font-size: 30px; line-height: 1.3; margin: 12px 0 8px; }
+      #app-static h2 { font-size: 22px; margin: 36px 0 8px; }
+      #app-static h3 { font-size: 17px; margin: 20px 0 4px; }
+      #app-static a { color: #b06f00; }
+    </style>
   </head>
   <body>
     <div id="root">
-      <div id="app-loading" style="min-height:100vh;display:flex;align-items:center;justify-content:center;background:#fffdf8;color:#2d2417;font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif;">
-        <div style="text-align:center;padding:24px;">
-          <div style="width:48px;height:48px;border-radius:999px;border:3px solid #f6e4b6;border-top-color:#b06f00;margin:0 auto 16px;animation:spin 0.8s linear infinite;"></div>
-          <div style="font-size:16px;font-weight:600;">채록(chaerok)</div>
-          <div style="font-size:14px;color:#6f6255;margin-top:8px;">잠시만 기다려 주세요.</div>
-        </div>
+      <div id="app-static">
+        <!--seo:body:start--><!--seo:body:end-->
       </div>
     </div>
-    <style>
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
-    </style>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
-
